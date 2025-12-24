@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Transparência & Open Source — MindGuard Block</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: #e5e7eb;
+            padding: 32px;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2 {
+            color: #60a5fa;
+        }
+
+        code,
+        pre {
+            background: #020617;
+            padding: 12px;
+            border-radius: 6px;
+            display: block;
+            overflow-x: auto;
+            color: #e5e7eb;
+        }
+
+        .warn {
+            background: #1e293b;
+            border-left: 4px solid #facc15;
+            padding: 16px;
+            margin: 24px 0;
+        }
+
+        .ok {
+            background: #1e293b;
+            border-left: 4px solid #22c55e;
+            padding: 16px;
+            margin: 24px 0;
+        }
+
+        .danger {
+            background: #1e293b;
+            border-left: 4px solid #ef4444;
+            padding: 16px;
+            margin: 24px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🔓 Código 100% Open Source</h1>
+
+    <p>
+        O <strong>MindGuard Block</strong> é um projeto <strong>totalmente open source</strong>.
+        Não existe código oculto, rastreamento, coleta de dados ou scripts remotos.
+    </p>
+
+    <div class="ok">
+        ✅ Todo o código da extensão está disponível neste repositório<br />
+        ✅ Nenhuma dependência externa é carregada<br />
+        ✅ Nenhum dado do usuário é coletado ou enviado
+    </div>
+
+    <h2>🧠 Transparência total</h2>
+
+    <p>
+        Sabemos que extensões de navegador exigem confiança.
+        Por isso, <strong>todo o script injetado no navegador é visível</strong> e pode ser auditado por qualquer
+        pessoa.
+    </p>
+
+    <p>
+        A extensão utiliza apenas APIs oficiais do navegador (<code>declarativeNetRequest</code>)
+        para bloquear domínios e redirecionar o usuário para uma tela local de conscientização.
+    </p>
+
+    <h2>📜 Script principal (Service Worker)</h2>
+
+    <p>Este é o núcleo da extensão responsável pelo bloqueio:</p>
+
+    <pre><code>
+// logica.js (Service Worker)
+
+import { BLOCKED_SITES } from "./blockedSites.js";
+
+const RULE_ID_BASE = 1000;
+const BLOCK_PAGE = chrome.runtime.getURL("block/blocked.html");
+
+chrome.runtime.onInstalled.addListener(() => {
+  updateRules();
+});
+
+async function updateRules() {
+  const rules = BLOCKED_SITES.map((site, index) => ({
+    id: RULE_ID_BASE + index,
+    priority: 1,
+    action: {
+      type: "redirect",
+      redirect: { url: BLOCK_PAGE }
+    },
+    condition: {
+      urlFilter: site,
+      resourceTypes: ["main_frame"]
+    }
+  }));
+
+  const existingRules =
+    await chrome.declarativeNetRequest.getDynamicRules();
+
+  await chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: existingRules.map(r => r.id),
+    addRules: rules
+  });
+}
+  </code></pre>
+
+    <h2>⚠️ Aviso importante (estado atual do projeto)</h2>
+
+    <div class="warn">
+        Este projeto está em <strong>desenvolvimento ativo</strong>.
+    </div>
+
+    <p>
+        Ainda existem <strong>bugs conhecidos</strong>, principalmente em:
+    </p>
+
+    <ul>
+        <li>Páginas de download</li>
+        <li>Sites que utilizam redirecionamentos agressivos</li>
+        <li>Portais que carregam conteúdo dinâmico antes da navegação principal</li>
+    </ul>
+
+    <div class="danger">
+        ❗ O MindGuard Block <strong>não deve ser considerado uma solução definitiva</strong> neste estágio.<br />
+        Ele é experimental e pode apresentar falhas.
+    </div>
+
+    <h2>🤝 Contribuições</h2>
+
+    <p>
+        Se você encontrou um bug, problema de bloqueio ou deseja melhorar o projeto,
+        sinta-se à vontade para abrir uma <strong>Issue</strong> ou enviar um <strong>Pull Request</strong>.
+    </p>
+
+    <p>
+        Transparência, foco e bem-estar digital são os pilares deste projeto.
+    </p>
+
+    <p><strong>— MindGuard Block</strong></p>
+
+</body>
+
+</html>

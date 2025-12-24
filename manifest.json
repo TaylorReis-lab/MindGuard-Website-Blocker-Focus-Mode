@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "MindGuard — Website Blocker & Focus Mode",
+  "description": "Open-source website blocker to block adult content and distracting sites, improving focus and digital well-being.",
+  "version": "1.0.0",
+
+  "background": {
+    "service_worker": "logica.js",
+    "type": "module"
+  },
+
+  "permissions": ["declarativeNetRequest"],
+
+  "host_permissions": ["<all_urls>"],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["block/*", "icons/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
