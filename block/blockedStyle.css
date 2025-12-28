@@ -1,0 +1,27 @@
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #1a2231;
+  color: #e0e7ff;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.zen-gradient-text {
+  background: linear-gradient(135deg, #2060df 0%, #60a5fa 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.zen-gradient-bg {
+  background: linear-gradient(135deg, #111621 0%, #1a2231 100%);
+}
+.zen-gradient-border {
+  border-image: linear-gradient(135deg, #2060df 0%, #60a5fa 100%);
+  border-image-slice: 1;
+}
