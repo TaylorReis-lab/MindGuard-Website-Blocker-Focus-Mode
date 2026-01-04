@@ -63,7 +63,7 @@
 </p>
 
 <ul>
-  <li>🚧 Podem existir bugs em páginas específicas</li>
+  <li>🚧 Podem existir bugs em páginas específicas e outras páginas que não foram identificadas</li>
   <li>🚧 Alguns sites de download podem não ser bloqueados corretamente</li>
   <li>🚧 Melhorias e correções estão em andamento</li>
 </ul>
