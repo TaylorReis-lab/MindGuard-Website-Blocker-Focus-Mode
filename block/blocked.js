@@ -12,10 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function configureBlockPage() {
+    window.location.href = "../blockedConfig.html";
+    console.log("Redirecionando para a página de bloqueio");
+  }
+
   if (settingsBtn) {
     settingsBtn.addEventListener("click", () => {
       // Futuro dashboard da extensão
       alert("Em breve: configurações do MindGuard (em desenvolvimento)");
+      configureBlockPage();
+      console.log("Configurações do MindGuard em desenvolvimento");
     });
   }
 });
