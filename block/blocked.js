@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (settingsBtn) {
     settingsBtn.addEventListener("click", () => {
       // Futuro dashboard da extensão
-      alert("Em breve: configurações do MindGuard");
+      alert("Em breve: configurações do MindGuard (em desenvolvimento)");
     });
   }
 });
