@@ -1,2 +1,5 @@
-/blockedSites.js
+/blockList.js
 /config.html
+/pageConfig/blockedConfig.html
+/pageConfig/blockedConfig.js
+/pageConfig/blockedConfigStyle.css

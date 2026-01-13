@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function configureBlockPage() {
-    window.location.href = "../blockedConfig.html";
+    window.location.href = "../pageConfig/blockedConfig.html";
     console.log("Redirecionando para a página de bloqueio");
   }
 

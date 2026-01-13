@@ -7,7 +7,8 @@
   "action": {
     "default_icon": {
       "16": "icons/escudo.png"
-    }
+    },
+    "default_popup": "popupConfig/popup.html"
   },
   "name": "MindGuard",
   "description": "Open-source website blocker to block adult content and distracting sites, improving focus and digital well-being.",
@@ -19,7 +20,11 @@
     "type": "module"
   },
 
-  "permissions": ["declarativeNetRequest"],
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "storage"
+  ],
 
   "host_permissions": ["<all_urls>"],
 

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>MindGuard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <link rel="stylesheet" href="popup.css" />
+    <script src="popup.js" defer></script>
+</head>
+
+<body>
+    <div class="popup">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="brand">
+                <div class="icon">
+                    <span class="material-symbols-outlined">shield_with_heart</span>
+                </div>
+                <h1>MindGuard</h1>
+            </div>
+
+            <button class="icon-btn" id="openSettingsBtn">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+        </header>
+
+        <!-- Main -->
+        <section class="main">
+            <h2>Proteção Ativa</h2>
+            <p>Navegação segura em tempo real</p>
+
+            <div class="toggle-card">
+                <label class="toggle">
+                    <input type="checkbox" id="enableProtection" checked />
+                    <span class="slider"></span>
+                </label>
+                <span class="status">Ativado</span>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="stats">
+            <div class="stat">
+                <span>Bloqueios Hoje</span>
+                <strong id="blocksToday">0</strong>
+            </div>
+            <div class="stat">
+                <span>Ameaças</span>
+                <strong id="threats">0</strong>
+            </div>
+        </section>
+
+        <!-- Streak -->
+        <section class="streak">
+            <div class="streak-card">
+                <span>Dias sem Acesso</span>
+                <strong id="streakDays">0</strong>
+            </div>
+        </section>
+
+        <!-- Actions -->
+        <section class="actions">
+            <a href="#" id="openAllowlist">
+                <span class="material-symbols-outlined">list_alt</span>
+                <div>
+                    <strong>Lista de Permissões</strong>
+                    <small>Gerenciar sites liberados</small>
+                </div>
+            </a>
+
+            <a href="#" id="openStats">
+                <span class="material-symbols-outlined">bar_chart</span>
+                <div>
+                    <strong>Estatísticas</strong>
+                    <small>Relatório de atividades</small>
+                </div>
+            </a>
+
+            <a href="#" id="openSettings">
+                <span class="material-symbols-outlined">tune</span>
+                <div>
+                    <strong>Configurações</strong>
+                    <small>Personalize filtros</small>
+                </div>
+            </a>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <span>Versão 2.4.1</span>
+            <a href="#">Suporte</a>
+        </footer>
+
+    </div>
+</body>
+
+</html>
