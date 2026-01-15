@@ -3,17 +3,23 @@ import { BLOCKED_SITES } from "./blockList.js";
 const RULE_ID_BASE = 1000;
 const BLOCK_PAGE = chrome.runtime.getURL("block/blocked.html");
 
+// ============================
+// INSTALL
+// ============================
 chrome.runtime.onInstalled.addListener(() => {
   console.log("MindGuard ativo");
   updateRules();
-  initializeStats();
+  resetDailyStatsIfNeeded();
 });
 
-// Initialize stats if not exist
-function initializeStats() {
+// ============================
+// DAILY RESET
+// ============================
+function resetDailyStatsIfNeeded() {
   const today = new Date().toDateString();
+
   chrome.storage.local.get(
-    ["statsDate", "blocksToday", "threatsToday"],
+    ["statsDate", "blocksToday", "threatsToday", "streakDays", "lastAccess"],
     (data) => {
       if (data.statsDate !== today) {
         chrome.storage.local.set({
@@ -21,32 +27,54 @@ function initializeStats() {
           blocksToday: 0,
           threatsToday: 0,
         });
+
+        // Atualiza streak
+        if (data.lastAccess) {
+          const diff =
+            (new Date(today) - new Date(data.lastAccess)) /
+            (1000 * 60 * 60 * 24);
+
+          const newStreak = diff === 1 ? (data.streakDays ?? 0) + 1 : 1;
+          chrome.storage.local.set({ streakDays: newStreak });
+        } else {
+          chrome.storage.local.set({ streakDays: 1 });
+        }
+
+        chrome.storage.local.set({ lastAccess: today });
       }
     }
   );
 }
 
-// Track blocked requests
-chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((info) => {
-  if (info.request.initiator) {
-    // Only count user-initiated requests
-    chrome.storage.local.get(["blocksToday", "threatsToday"], (data) => {
-      const blocks = (data.blocksToday || 0) + 1;
-      const threats = (data.threatsToday || 0) + 1; // Assuming each block is a threat
-      chrome.storage.local.set({
-        blocksToday: blocks,
-        threatsToday: threats,
-        lastAccess: new Date().toISOString(),
-      });
+// ============================
+// PROFESSIONAL COUNTER
+// ============================
+chrome.webNavigation.onBeforeNavigate.addListener((details) => {
+  // Apenas navegação principal do usuário
+  if (details.frameId !== 0) return;
+  if (!details.url.startsWith("http")) return;
+
+  const isBlocked = BLOCKED_SITES.some((site) =>
+    details.url.includes(site.replace("*", ""))
+  );
+
+  if (!isBlocked) return;
+
+  resetDailyStatsIfNeeded();
+
+  chrome.storage.local.get(["blocksToday", "threatsToday"], (data) => {
+    chrome.storage.local.set({
+      blocksToday: (data.blocksToday ?? 0) + 1,
+      threatsToday: (data.threatsToday ?? 0) + 1,
     });
-  }
+  });
 });
 
-// Update settings
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+// ============================
+// SETTINGS FROM POPUP
+// ============================
+chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "updateSettings") {
-    console.log("Settings updated:", message.settings);
-    // Apply settings, e.g., enable/disable rules
     if (message.settings.enableProtection === false) {
       chrome.declarativeNetRequest.updateDynamicRules({
         removeRuleIds: BLOCKED_SITES.map((_, index) => RULE_ID_BASE + index),
@@ -57,6 +85,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
+// ============================
+// UPDATE RULES
+// ============================
 async function updateRules() {
   const rules = BLOCKED_SITES.map((site, index) => ({
     id: RULE_ID_BASE + index,
