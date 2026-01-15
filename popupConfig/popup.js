@@ -1,40 +1,85 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const enableProtection = document.getElementById("enableProtection");
-  const statusText = document.querySelector(".status");
+const enableProtection = document.getElementById("enableProtection");
+const statusText = document.querySelector(".status");
 
-  const blocksTodayEl = document.getElementById("blocksToday");
-  const threatsEl = document.getElementById("threats");
-  const streakEl = document.getElementById("streakDays");
+// ============================
+// INIT
+// ============================
+chrome.storage.local.get(
+  ["enableProtection", "blocksToday", "threatsToday", "streakDays"],
+  (data) => {
+    const enabled = data.enableProtection !== false;
 
-  // Load data
-  chrome.storage.local.get(
-    ["enableProtection", "blocksToday", "threatsToday", "streakDays"],
-    (data) => {
-      enableProtection.checked = data.enableProtection ?? true;
-      updateStatus(enableProtection.checked);
+    enableProtection.checked = enabled;
+    updateStatusText(enabled);
 
-      blocksTodayEl.textContent = data.blocksToday ?? 0;
-      threatsEl.textContent = data.threatsToday ?? 0;
-      streakEl.textContent = data.streakDays ?? 0;
-    }
-  );
+    updateCounters(data);
+  }
+);
 
-  // Toggle protection
-  enableProtection.addEventListener("change", () => {
-    const isEnabled = enableProtection.checked;
-
-    chrome.storage.local.set({ enableProtection: isEnabled });
-
-    chrome.runtime.sendMessage({
-      action: "toggleProtection",
-      enabled: isEnabled,
-    });
-
-    updateStatus(isEnabled);
+// ============================
+// TOGGLE
+// ============================
+enableProtection.addEventListener("change", () => {
+  chrome.storage.local.set({
+    enableProtection: enableProtection.checked,
   });
 
-  function updateStatus(enabled) {
-    statusText.textContent = enabled ? "Ativado" : "Desativado";
-    statusText.style.color = enabled ? "#16a34a" : "#dc2626";
-  }
+  chrome.runtime.sendMessage({
+    action: "updateSettings",
+  });
 });
+
+// ============================
+// REALTIME STORAGE SYNC
+// ============================
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "local") return;
+
+  if (changes.enableProtection) {
+    const enabled = changes.enableProtection.newValue !== false;
+    enableProtection.checked = enabled;
+    updateStatusText(enabled);
+  }
+
+  updateCountersFromChanges(changes);
+});
+
+// ============================
+// UI HELPERS
+// ============================
+function updateStatusText(enabled) {
+  statusText.textContent = enabled ? "Ativado" : "Desativado";
+  statusText.classList.toggle("active", enabled);
+  statusText.style.color = enabled ? "#16a34a" : "#dc2626";
+}
+
+function updateCounters(data) {
+  if (data.blocksToday !== undefined) {
+    document.getElementById("blocksToday").textContent = data.blocksToday;
+  }
+
+  if (data.threatsToday !== undefined) {
+    document.getElementById("threats").textContent = data.threatsToday;
+  }
+
+  if (data.streakDays !== undefined) {
+    document.getElementById("streakDays").textContent = data.streakDays;
+  }
+}
+
+function updateCountersFromChanges(changes) {
+  if (changes.blocksToday) {
+    document.getElementById("blocksToday").textContent =
+      changes.blocksToday.newValue;
+  }
+
+  if (changes.threatsToday) {
+    document.getElementById("threats").textContent =
+      changes.threatsToday.newValue;
+  }
+
+  if (changes.streakDays) {
+    document.getElementById("streakDays").textContent =
+      changes.streakDays.newValue;
+  }
+}
