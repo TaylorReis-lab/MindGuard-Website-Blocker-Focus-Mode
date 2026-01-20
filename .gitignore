@@ -3,3 +3,5 @@
 /pageConfig/blockedConfig.html
 /pageConfig/blockedConfig.js
 /pageConfig/blockedConfigStyle.css
+/node_modules
+/pageConfig

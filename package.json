@@ -1,0 +1,20 @@
+{
+  "name": "mindguard-extension",
+  "version": "1.0.2",
+  "description": "Open-source website blocker to block adult content and distracting sites, improving focus and digital well-being.",
+  "main": "logica.js",
+  "scripts": {
+    "build-css": "tailwindcss -i ./popupConfig/input.css -o ./popupConfig/popup.css --watch",
+    "build-contact-css": "tailwindcss -i ./popupConfig/contact-input.css -o ./popupConfig/contact.css --config ./popupConfig/tailwind.config.js",
+    "build-blocked-config-css": "tailwindcss -i ./page/pageConfig/blockedConfig-input.css -o ./page/pageConfig/blockedConfigStyle.css --config ./page/pageConfig/tailwind.config.js"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "author": "Taylor Reis",
+  "license": "MIT",
+  "dependencies": {
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.11"
+  }
+}
