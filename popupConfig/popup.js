@@ -1,5 +1,6 @@
 const enableProtection = document.getElementById("enableProtection");
 const statusText = document.querySelector(".status");
+const configPageLink = document.getElementById("openSettings");
 
 // ============================
 // INIT
@@ -13,8 +14,14 @@ chrome.storage.local.get(
     updateStatusText(enabled);
 
     updateCounters(data);
-  }
+  },
 );
+
+// ============================
+// OPEN CONFIG PAGE
+function openConfigPage() {
+  chrome.tabs.create({ url: "../page/pageConfig/blockedConfig.html" });
+}
 
 // ============================
 // TOGGLE
@@ -83,3 +90,8 @@ function updateCountersFromChanges(changes) {
       changes.streakDays.newValue;
   }
 }
+
+// ============================
+// EVENT LISTENERS
+// ============================
+configPageLink.addEventListener("click", openConfigPage);
