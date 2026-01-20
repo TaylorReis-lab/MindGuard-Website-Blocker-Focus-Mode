@@ -10,6 +10,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const messageTextarea = document.querySelector("textarea"); // Campo de mensagem
   const sendButton = document.querySelector("button"); // Botão de envio
   const closeButton = document.querySelector(".absolute.right-4.top-4"); // Botão de fechar
+  const faqButton = document.querySelector(".faqButton"); // Botão FAQ
+
+  // Redireciona para a página de FAQ ao clicar no botão
+  function openFAQ() {
+    alert("Pagina de FAQ em construção. Em breve estará disponível!");
+  }
 
   // Função para validar os campos do formulário
   function validateForm() {
@@ -71,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Adiciona event listeners aos botões
   sendButton.addEventListener("click", submitForm); // Envio ao clicar no botão
   closeButton.addEventListener("click", closePage); // Fechar ao clicar no X
+  faqButton.addEventListener("click", openFAQ); // Abrir FAQ ao clicar no botão
 
   // Permite envio com Enter no campo de mensagem
   messageTextarea.addEventListener("keydown", function (event) {

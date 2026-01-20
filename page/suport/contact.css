@@ -1238,7 +1238,7 @@ input:where([type='file']):focus {
 }
 
 .focus\:ring-primary\/50:focus {
-  --tw-ring-color: rgb(44 9 127 / 0.5);
+  --tw-ring-color: rgba(91, 52, 182, 0.5);
 }
 
 .dark\:border-white\/10:is(.dark *) {
@@ -1255,7 +1255,7 @@ input:where([type='file']):focus {
 }
 
 .dark\:bg-primary\/20:is(.dark *) {
-  background-color: rgb(44 9 127 / 0.2);
+  background-color: rgba(89, 40, 204, 0.2);
 }
 
 .dark\:bg-slate-800:is(.dark *) {
