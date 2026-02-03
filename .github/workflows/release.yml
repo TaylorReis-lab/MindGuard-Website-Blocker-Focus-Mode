@@ -1,0 +1,40 @@
+name: Release Extension
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔖 Sincronizar versão da tag com manifest.json
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          echo "Versão detectada: $TAG_VERSION"
+
+          jq --arg v "$TAG_VERSION" '.version = $v' manifest.json > manifest.tmp.json
+          mv manifest.tmp.json manifest.json
+
+      - name: 📦 Build da extensão
+        run: |
+          mkdir -p dist
+          zip -r dist/extension.zip src manifest.json README.md
+
+      - name: 🚀 Criar Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/extension.zip
+          name: "Extensão - ${{ github.ref_name }}"
+          body: |
+            🚀 Nova versão da extensão
+
+            🔖 Versão: ${{ github.ref_name }}
+            📦 Build sincronizado com o manifest.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
